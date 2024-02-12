@@ -13,17 +13,35 @@ var connectionFactory = new ConnectionFactory
 using var connection = connectionFactory.CreateConnection();
 using var channel = connection.CreateModel();
 
+channel.ConfirmSelect();
+channel.QueueDeclare("hello-queue2", durable: true, exclusive: false, autoDelete: false, arguments: null);
 
-channel.QueueDeclare("hello-queue", durable: true, exclusive: false, autoDelete: false, arguments: null);
+channel.BasicAcks += Channel_BasicAcks;
 
+void Channel_BasicAcks(object? sender, RabbitMQ.Client.Events.BasicAckEventArgs e)
+{
+    Console.WriteLine($"Mesaj ack bilgisi geldi- {e.DeliveryTag}");
+}
 
 var message = "Merhaba RabbitMQ";
 
 var body = Encoding.UTF8.GetBytes(message);
 
-Enumerable.Range(1, 1000).ToList().ForEach(x =>
+int count = 0;
+Enumerable.Range(1, 100).ToList().ForEach(x =>
 {
     channel.BasicPublish(exchange: "", routingKey: "hello-queue", basicProperties: null, body: body);
+
+
+    count++;
+
+    if (count % 30 == 0)
+    {
+        channel.WaitForConfirms();
+    }
+
+
+    Console.WriteLine($"Mesaj iletildi- {x}");
 });
 
 
