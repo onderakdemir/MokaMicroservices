@@ -3,7 +3,7 @@ using SharedEvents;
 
 namespace Microservice2.API.Consumers
 {
-    public class OrderCreatedEventConsumer : IConsumer<OrderCreatedEvent>
+    public class OrderCreatedEventConsumer(IPublishEndpoint publishEndpoint) : IConsumer<OrderCreatedEvent>
     {
         public Task Consume(ConsumeContext<OrderCreatedEvent> context)
         {
