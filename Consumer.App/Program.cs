@@ -14,6 +14,14 @@ var connectionFactory = new ConnectionFactory
 
 using var connection = connectionFactory.CreateConnection();
 using var channel = connection.CreateModel();
+channel.BasicQos(0, 10, true);
+
+
+var queueName = channel.QueueDeclare(exclusive: false).QueueName;
+
+
+channel.QueueBind(queueName, "direct-exchange", "order.created.route.key");
+
 
 var consumer = new EventingBasicConsumer(channel);
 
@@ -21,9 +29,9 @@ consumer.Received += (sender, e) =>
 {
     var message = Encoding.UTF8.GetString(e.Body.ToArray());
     Console.WriteLine($"Gelen mesaj: {message}");
-    //channel.BasicAck(e.DeliveryTag, multiple: false);
+    channel.BasicAck(e.DeliveryTag, multiple: false);
 };
 
-channel.BasicConsume("hello-queue", true, consumer);
+channel.BasicConsume(queueName, false, consumer);
 
 Console.ReadLine();

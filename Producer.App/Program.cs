@@ -16,29 +16,35 @@ using var channel = connection.CreateModel();
 channel.ConfirmSelect();
 channel.QueueDeclare("hello-queue2", durable: true, exclusive: false, autoDelete: false, arguments: null);
 
-channel.BasicAcks += Channel_BasicAcks;
+//channel.BasicAcks += Channel_BasicAcks;
 
-void Channel_BasicAcks(object? sender, RabbitMQ.Client.Events.BasicAckEventArgs e)
+channel.BasicReturn += Channel_BasicReturn;
+
+void Channel_BasicReturn(object? sender, RabbitMQ.Client.Events.BasicReturnEventArgs e)
 {
-    Console.WriteLine($"Mesaj ack bilgisi geldi- {e.DeliveryTag}");
+    Console.WriteLine($"Mesaj ilgili kuyruğa gitmedi.{e.RoutingKey}");
 }
+
+//void Channel_BasicAcks(object? sender, RabbitMQ.Client.Events.BasicAckEventArgs e)
+//{
+//    Console.WriteLine($"Mesaj ack bilgisi geldi- {e.DeliveryTag}");
+//}
+
 
 var message = "Merhaba RabbitMQ";
 
 var body = Encoding.UTF8.GetBytes(message);
 
-int count = 0;
-Enumerable.Range(1, 100).ToList().ForEach(x =>
+
+channel.ExchangeDeclare("direct-exchange", ExchangeType.Direct, true, false, null);
+
+Enumerable.Range(1, 10).ToList().ForEach(x =>
 {
-    channel.BasicPublish(exchange: "", routingKey: "hello-queue", basicProperties: null, body: body);
-
-
-    count++;
-
-    if (count % 30 == 0)
-    {
-        channel.WaitForConfirms();
-    }
+    var properties = channel.CreateBasicProperties();
+    properties.Persistent = true;
+    channel.BasicPublish(exchange: "direct-exchange", routingKey: "order.created.route.key",
+        basicProperties: properties,
+        body: body, mandatory: true);
 
 
     Console.WriteLine($"Mesaj iletildi- {x}");
