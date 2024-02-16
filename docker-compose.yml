@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  dockermicroservice1.api:
+    image: dockermicroservice1api
+    build:
+      context: .
+      dockerfile: DockerMicroservice1.API/Dockerfile
+  dockermicroservice2.api:
+    image: dockermicroservice2api
+    build:
+      context: .
+      dockerfile: DockerMicroservice2.API/Dockerfile
+  mssql_db:
+   image: mcr.microsoft.com/mssql/server:2022-latest
+volumes:
+   mssql_data:

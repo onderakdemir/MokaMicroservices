@@ -1,0 +1,54 @@
+
+version: '3.4'
+
+services:
+  dockermicroservice1.api:
+   environment:
+    - MicroservicesUrl:Microservice2BaseUrl=http://dockermicroservice2.api:8080
+    - ConnectionStrings:SqlServer=Server=mssql_db,1433;Database=MokaDb; User=sa; Password=Password123!;TrustServerCertificate=True
+   ports:
+   - 5010:8080 
+  dockermicroservice2.api:
+   ports:
+   - 5001:8080
+  mssql_db:
+   user: root
+   environment:
+    - ACCEPT_EULA=Y
+    - SA_PASSWORD=Password123! 
+   ports:
+    - 1433:1433 
+   volumes:
+   - mssql_data:/var/opt/mssql
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# services:
+ 
+
+
+
+
+#   dockermicroservice1.api:
+#     environment:
+#       - ASPNETCORE_ENVIRONMENT=Development
+#       - ASPNETCORE_HTTP_PORTS=8080
+#     ports:
+#       - "8080"
