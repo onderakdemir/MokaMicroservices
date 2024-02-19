@@ -1,0 +1,6 @@
+@DockerMicroservice3.API_HostAddress = http://localhost:5087
+
+GET {{DockerMicroservice3.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -11,7 +11,14 @@ services:
     build:
       context: .
       dockerfile: DockerMicroservice2.API/Dockerfile
+  dockermicroservice4.api:
+    image: dockermicroservice4api
+    build:
+      context: .
+      dockerfile: DockerMicroservice4.API/Dockerfile
   mssql_db:
    image: mcr.microsoft.com/mssql/server:2022-latest
 volumes:
    mssql_data:
+  
+  

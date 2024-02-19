@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DockerMicroservice2.API", "
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{2DF6E639-7376-4F75-A82E-DA613F90CCB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "..\ConsoleApp1\ConsoleApp1.csproj", "{4655A691-98B3-4493-9BDA-77A8D4AB703D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "..\ConsoleApp1\ConsoleApp1.csproj", "{4655A691-98B3-4493-9BDA-77A8D4AB703D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockerMicroservice4.API", "DockerMicroservice4.API\DockerMicroservice4.API.csproj", "{5BADEC6F-D83D-4D0E-91F1-3D8A85A1AAA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{4655A691-98B3-4493-9BDA-77A8D4AB703D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4655A691-98B3-4493-9BDA-77A8D4AB703D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4655A691-98B3-4493-9BDA-77A8D4AB703D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BADEC6F-D83D-4D0E-91F1-3D8A85A1AAA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BADEC6F-D83D-4D0E-91F1-3D8A85A1AAA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BADEC6F-D83D-4D0E-91F1-3D8A85A1AAA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BADEC6F-D83D-4D0E-91F1-3D8A85A1AAA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
