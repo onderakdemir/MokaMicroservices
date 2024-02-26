@@ -39,7 +39,6 @@ builder.Services.AddOpenTelemetry().WithTracing(configure =>
     {
         aspnetCoreConfigure.EnrichWithHttpRequest = ((activity, request) =>
         {
-            
             var claim = request.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
 
             var userId = 134;
@@ -52,12 +51,10 @@ builder.Services.AddOpenTelemetry().WithTracing(configure =>
     {
         entityConfigure.EnrichWithIDbCommand = (activity, dbCommand) =>
         {
-
             foreach (DbParameter parameter in dbCommand.Parameters)
             {
                 activity.SetTag(parameter.ParameterName, parameter.Value);
             }
-
         };
 
 
