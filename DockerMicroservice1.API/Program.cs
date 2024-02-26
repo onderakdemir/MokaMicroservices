@@ -12,21 +12,21 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
-});
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//{
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
+//});
 builder.Services.AddHttpClient<Microservice2Services>(opt =>
 {
     opt.BaseAddress = new Uri(builder.Configuration.GetSection("MicroservicesUrl")["Microservice2BaseUrl"]!);
 });
 var app = builder.Build();
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+//using (var scope = app.Services.CreateScope())
+//{
+//    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-    dbContext.Database.Migrate();
-}
+//    dbContext.Database.Migrate();
+//}
 
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
