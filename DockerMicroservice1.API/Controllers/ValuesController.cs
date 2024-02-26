@@ -7,16 +7,16 @@ namespace DockerMicroservice1.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController(Microservice2Services microservice2Services) : ControllerBase
+    public class ValuesController(Microservice2Services microservice2Services, AppDbContext context) : ControllerBase
     {
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            //var products = context.Products.ToList();
+            var products = context.Products.ToList();
 
-            //return Ok(products);
+            return Ok(products);
 
-            return Ok(await microservice2Services.GetMicroservice2Value());
+            //return Ok(await microservice2Services.GetMicroservice2Value());
         }
     }
 }
