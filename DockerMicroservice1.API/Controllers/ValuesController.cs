@@ -14,9 +14,9 @@ namespace DockerMicroservice1.API.Controllers
         {
             var products = context.Products.ToList();
 
-            return Ok(products);
+            //return Ok(products);
 
-            //return Ok(await microservice2Services.GetMicroservice2Value());
+            return Ok(await microservice2Services.GetMicroservice2Value());
         }
     }
 }

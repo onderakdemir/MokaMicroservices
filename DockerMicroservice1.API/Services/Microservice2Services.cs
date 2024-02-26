@@ -1,11 +1,22 @@
-﻿namespace DockerMicroservice1.API.Services
+﻿using System.Diagnostics;
+
+namespace DockerMicroservice1.API.Services
 {
     public class Microservice2Services(HttpClient client)
     {
         public async Task<string> GetMicroservice2Value()
         {
-            var response = await client.GetAsync("/api/Values");
-            return await response.Content.ReadAsStringAsync();
+            Activity.Current?.SetBaggage("order.id", "200");
+
+            var response = await client.PostAsJsonAsync("/api/Values", new { Id = 10, Name = "Kalem 1" });
+
+
+            using (var activity = ActivitySourceProvider.Source.StartActivity())
+            {
+                var content = await response.Content.ReadAsStringAsync();
+
+                return content;
+            }
         }
     }
 }

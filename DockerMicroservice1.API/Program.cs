@@ -27,6 +27,7 @@ builder.Services.AddHttpClient<Microservice2Services>(opt =>
 
 builder.Services.AddOpenTelemetry().WithTracing(configure =>
 {
+    configure.SetSampler(new TraceIdRatioBasedSampler(1));
     configure.AddSource("DockerMicroservice1ActivitySource");
 
     configure.ConfigureResource(resourceConfigure =>
@@ -37,6 +38,14 @@ builder.Services.AddOpenTelemetry().WithTracing(configure =>
 
     configure.AddAspNetCoreInstrumentation(aspnetCoreConfigure =>
     {
+        aspnetCoreConfigure.Filter = (httpContext) =>
+        {
+            if (!httpContext.Request.Path.HasValue || !httpContext.Request.Path.Value.Contains("api")) return false;
+
+
+            return true;
+        };
+
         aspnetCoreConfigure.EnrichWithHttpRequest = ((activity, request) =>
         {
             var claim = request.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
@@ -61,6 +70,26 @@ builder.Services.AddOpenTelemetry().WithTracing(configure =>
         entityConfigure.SetDbStatementForStoredProcedure = true;
         entityConfigure.SetDbStatementForText = true;
     });
+
+
+    configure.AddHttpClientInstrumentation(httpConfigure =>
+    {
+        httpConfigure.EnrichWithHttpRequestMessage = (async (activity, message) =>
+        {
+            if (message.Content == null) return;
+
+
+            var requestBodyContent = await message.Content.ReadAsStringAsync();
+
+            activity.SetTag("request.body", requestBodyContent);
+        });
+
+        httpConfigure.EnrichWithHttpResponseMessage = (async (activity, message) =>
+        {
+            activity.SetTag("response.body", await message.Content.ReadAsStringAsync());
+        });
+    });
+
 
     configure.AddConsoleExporter().AddOtlpExporter();
 });

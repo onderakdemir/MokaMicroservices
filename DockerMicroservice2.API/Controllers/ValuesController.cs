@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DockerMicroservice2.API.Controllers
@@ -7,9 +8,16 @@ namespace DockerMicroservice2.API.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult Get()
+        [HttpPost]
+        public IActionResult Post()
         {
+            var headers = Request.Headers;
+
+            using (var activity = ActivitySourceProvider.Source.StartActivity(parentContext: new ActivityContext()))
+            {
+            }
+
+            var orderId = Activity.Current?.GetBaggageItem("order.id");
             return Ok("Microservice2 Value");
         }
     }
